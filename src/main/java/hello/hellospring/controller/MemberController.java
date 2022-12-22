@@ -4,6 +4,8 @@ import hello.hellospring.domain.Member;
 import hello.hellospring.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 //화면에 붙이려면 컨트롤러와 뷰템플릿이 필요
 //멤버 컨트롤러가 멤버서비스를 통해 회원가입과 데이터 조회가 가능하게해야됨(의존관계)
@@ -19,5 +21,20 @@ public class MemberController {
     @Autowired
     public MemberController(MemberService memberService) {
         this.memberService = memberService;
+    }
+
+    //get은 보통 조회할때, post는 보통 form에 넣어서 값을 전달할때 사용.
+    @GetMapping("/members/new")
+    public String createForm() {
+        return "members/createMemberForm";
+    }
+    @PostMapping("/members/new")
+    public String create(MemberForm form) {
+        // memberform의 name에 input에 입력된 값이 들어옴
+        Member member = new Member();
+        member.setName(form.getName());
+        memberService.join(member);
+
+        return "redirect:/";
     }
 }
