@@ -4,8 +4,11 @@ import hello.hellospring.domain.Member;
 import hello.hellospring.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
 
 //화면에 붙이려면 컨트롤러와 뷰템플릿이 필요
 //멤버 컨트롤러가 멤버서비스를 통해 회원가입과 데이터 조회가 가능하게해야됨(의존관계)
@@ -33,8 +36,18 @@ public class MemberController {
         // memberform의 name에 input에 입력된 값이 들어옴
         Member member = new Member();
         member.setName(form.getName());
+
         memberService.join(member);
 
         return "redirect:/";
+    }
+
+    @GetMapping("/members")
+    public String list(Model model) {
+
+        List<Member>members = memberService.findMembers();
+        model.addAttribute("members",members);  //멤버 전체를 모델에 담아서 화면에 넘김
+        return "members/memberList";
+
     }
 }
