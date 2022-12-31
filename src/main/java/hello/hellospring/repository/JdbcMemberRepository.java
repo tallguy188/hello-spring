@@ -4,6 +4,7 @@ import hello.hellospring.domain.Member;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +19,14 @@ public class JdbcMemberRepository implements MemberRepository{
     @Override
     public Member save(Member member) {
         String sql = "insert into member(name) values(?)";
-        Connection connection = dataSource.getConnection();
+        Connection conn = dataSource.getConnection();
+
+        PreparedStatement prestate = conn.prepareStatement(sql);
+        prestate.setString(1,member.getName());
+
+
+        prestate.executeUpdate();  // 이렇게하면db에 쿼리가 전송된다.
+
         return null;
     }
 
