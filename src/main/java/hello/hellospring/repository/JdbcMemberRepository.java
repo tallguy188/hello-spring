@@ -20,7 +20,7 @@ public class JdbcMemberRepository implements MemberRepository {
         try {
             conn = getConnection();
             pstmt = conn.prepareStatement(sql,
-                    Statement.RETURN_GENERATED_KEYS);
+                    Statement.RETURN_GENERATED_KEYS);   // 고유 id 값 생성을 위해 넣어줌
             pstmt.setString(1, member.getName());
             pstmt.executeUpdate();  // db에 실제 쿼리가 전송됨.
             rs = pstmt.getGeneratedKeys();  // db가 생성한 키값을 반환
